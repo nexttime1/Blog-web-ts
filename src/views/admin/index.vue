@@ -40,6 +40,15 @@
   </div>
   </aside>
   <main>
+    <div class="gvb_head">
+        <div class="gvb_bread_crumbs">
+    <a-breadcrumb>
+<a-breadcrumb-item>Home</a-breadcrumb-item>
+<a-breadcrumb-item>Channel</a-breadcrumb-item>
+<a-breadcrumb-item>News</a-breadcrumb-item>
+</a-breadcrumb>
+</div>
+</div>
     <router-view></router-view>
 </main>
 
@@ -144,5 +153,19 @@ width: 240px;
     }
 }
  }
+}
+
+main {
+    width:calc(100% - 240px);
+    .gvb_head {
+        width: 100%;
+        height: 60px;
+        border-bottom:1px solid var(--bg);
+        display: flex;
+        justify-content: space-between;
+        padding: 0 20px;
+        align-items: center;
+
+}
 }
 </style>
