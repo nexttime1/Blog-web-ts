@@ -48,8 +48,45 @@
 <a-breadcrumb-item>News</a-breadcrumb-item>
 </a-breadcrumb>
 </div>
+<div class="gvb_function_area">
+    <IconMenu class="action_icon"></IconMenu>
+<div class="gvb_theme">
+<IconSun class="action_icon"></IconSun>
 </div>
+<div class="gvb_user_info_menu">
+<a-dropdown >
+    <div class="gvb_user_info_menu_down">
+<img src="/image/girl.jpg" alt="">
+<span class="gvb_user_info_menu_down_span">nexttime</span>
+<IconDown></IconDown>
+</div>
+<template #content>
+<a-doption>0ption 1</a-doption>
+<a-doption>0ption 3</a-doption>
+<a-doption>0ption 4</a-doption>
+<a-doption>0ption 5</a-doption>
+</template>
+</a-dropdown>
+</div>
+</div>
+</div>
+<div class="gvb_tabs">
+    <span
+       v-for="(item, index) in tabList" :key="item.name"
+       :class="{gvb_tab: true, active: route.name === item.name}"
+       @click="clickTab(item)"
+       @click.middle="closeTab(item)"
+   >
+     {{ item.title }}
+      <IconClose @click.stop="closeTab(item)" v-if="item.name !== 'home'"></IconClose>
+   </span>
+   <span @click="closeAllTab" class="gvb_tab close_all_tab">全部关闭</span>
+  </div>
+<div class="gvb_container">
     <router-view></router-view>
+</div>
+
+
 </main>
 
     </div>
@@ -58,12 +95,19 @@
 </template>
 
 <script setup lang="ts">
-
+import {
+IconMenu,
+IconSun,
+IconApps,
+IconBug,
+IconBulb,
+IconDown,
+IconUser,
+} from '@arco-design/web-vue/es/icon';
 import {ref, watch} from "vue";
 import type {Component} from "vue";
 import {useRoute, useRouter} from "vue-router";
 
-import {IconMenu, IconUser} from "@arco-design/web-vue/es/icon";
 
 const route = useRoute()
 const router = useRouter()
@@ -167,5 +211,35 @@ main {
         align-items: center;
 
 }
+    .gvb_function_area{
+        display: flex;
+        .action_icon{
+                margin-right: 10px;
+                margin-top: 5px;
+                font-size: 16px;
+                align-items: center;
+            }
+        .gvb_user_info_menu{
+            img {
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                align-items: center;
+            }
+            .gvb_user_info_menu_down {
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+            }
+            .gvb_user_info_menu_down_span {
+                margin: 0 5px;
+            }
+        }
+    }
+    .gvb_container{
+        padding: 20px;
+        background-color: var(--bg);
+        min-height: calc(100vh - 90px);
+    }
 }
 </style>
