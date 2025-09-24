@@ -12,14 +12,14 @@
   <div class="gvb_menu">
     <a-menu
         @menu-item-click="clickMenu"
-        v-model:selected-keys="selectedKeys"
-        v-model:open-keys="openKeys"
+        v-model:selected-keys="selectedKeys"   
+        v-model:open-keys="openKeys"  <!-- 双向绑定：当前展开的子菜单key数组 -->
     >
       <template v-for="item in menuList" :key="item.key">
         <a-menu-item :key="item.name" v-if="item.child?.length === 0">
           {{ item.title }}
           <template #icon>
-            <component :is="item.icon"></component>
+            <component :is="item.icon"></component> <!-- :is会根据这个名称渲染对应的组件（比如引入的HomeIcon组件） -->
           </template>
         </a-menu-item>
         <a-sub-menu v-if="item.child?.length!==0 " :key="item.name">
