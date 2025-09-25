@@ -13,7 +13,7 @@
     <a-menu
         @menu-item-click="clickMenu"
         v-model:selected-keys="selectedKeys"   
-        v-model:open-keys="openKeys"  <!-- 双向绑定：当前展开的子菜单key数组 -->
+        v-model:open-keys="openKeys"         
     >
       <template v-for="item in menuList" :key="item.key">
         <a-menu-item :key="item.name" v-if="item.child?.length === 0">
@@ -43,9 +43,7 @@
     <div class="gvb_head">
         <div class="gvb_bread_crumbs">
     <a-breadcrumb>
-<a-breadcrumb-item>Home</a-breadcrumb-item>
-<a-breadcrumb-item>Channel</a-breadcrumb-item>
-<a-breadcrumb-item>News</a-breadcrumb-item>
+<a-breadcrumb-item v-for="item in route.matched">{{ (item.meta as MetaType).title  }}</a-breadcrumb-item>
 </a-breadcrumb>
 </div>
 <div class="gvb_function_area">
@@ -82,8 +80,13 @@
    </span>
    <span @click="closeAllTab" class="gvb_tab close_all_tab">全部关闭</span>
   </div>
+
 <div class="gvb_container">
-    <router-view></router-view>
+ <router-view v-slot="{Component}">
+<transition name="fade" mode="out-in">
+<component :is="Component"></component>
+</transition>
+</router-view>
 </div>
 
 
@@ -106,7 +109,7 @@ IconUser,
 } from '@arco-design/web-vue/es/icon';
 import {ref, watch} from "vue";
 import type {Component} from "vue";
-import {useRoute, useRouter} from "vue-router";
+import {useRoute, useRouter, type RouteMeta} from "vue-router";
 
 
 const route = useRoute()
@@ -117,6 +120,9 @@ interface MenuType {
   icon?: Component
   name?: string // 路由名字
   child?: MenuType[]
+}
+interface MetaType extends RouteMeta{
+  title: string
 }
 
 
@@ -150,9 +156,10 @@ const menuList: MenuType[] = [
 
 ]
 
-
 const selectedKeys = ref([route.name])
 const openKeys = ref([route.matched[1].name])
+
+console.log(route.matched)
 
 
 function clickMenu(name: string) {
@@ -209,6 +216,8 @@ main {
         justify-content: space-between;
         padding: 0 20px;
         align-items: center;
+        overflow-x: hidden;
+        overflow-y: auto;
 
 }
     .gvb_function_area{
@@ -240,6 +249,22 @@ main {
         padding: 20px;
         background-color: var(--bg);
         min-height: calc(100vh - 90px);
-    }
+
+      .fade-leave-to {
+      opacity: 0;
+      transform: translateX(30px);
+      }
+      .fade-enter-active {
+      transform: translateX(-30px);
+      opacity: 0;
+      }
+      .fade-enter-to {
+      transform: translateX(0px);
+      opacity: 1;
+      }
+      .fade-leave-active, .fade-enter-active {
+      transition: all 0.3s ease-out;
+          }
+}
 }
 </style>
