@@ -1,4 +1,4 @@
 body {
     --bg: #f0eeee;
-    --active: rgb(var(--arcoblue-6));
+    --active: rgba(var(--arcoblue-6));
 }

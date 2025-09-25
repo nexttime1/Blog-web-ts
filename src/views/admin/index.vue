@@ -1,51 +1,13 @@
 <template>
     <div class="gvb_admin">
 <aside>
-<div class="gvb_logo">
-<img src="/image/logo.jpg" alt="">
-<div class="logo_head">
-<div>下次一定.</div>
-<div>nexttime</div>
-</div>
-</div>
-    
-  <div class="gvb_menu">
-    <a-menu
-        @menu-item-click="clickMenu"
-        v-model:selected-keys="selectedKeys"   
-        v-model:open-keys="openKeys"         
-    >
-      <template v-for="item in menuList" :key="item.key">
-        <a-menu-item :key="item.name" v-if="item.child?.length === 0">
-          {{ item.title }}
-          <template #icon>
-            <component :is="item.icon"></component> <!-- :is会根据这个名称渲染对应的组件（比如引入的HomeIcon组件） -->
-          </template>
-        </a-menu-item>
-        <a-sub-menu v-if="item.child?.length!==0 " :key="item.name">
-          <template #icon>
-            <component :is="item.icon"></component>
-          </template>
-          <template #title>{{ item.title }}</template>
-          <a-menu-item :key="sub.name" v-for="sub in item.child">
-            {{ sub.title }}
-            <template #icon>
-              <component :is="sub.icon"></component>
-            </template>
-          </a-menu-item>
-        </a-sub-menu>
 
-      </template>
-    </a-menu>
-  </div>
+    <Gvb_menu></Gvb_menu>
+
   </aside>
   <main>
     <div class="gvb_head">
-        <div class="gvb_bread_crumbs">
-    <a-breadcrumb>
-<a-breadcrumb-item v-for="item in route.matched">{{ (item.meta as MetaType).title  }}</a-breadcrumb-item>
-</a-breadcrumb>
-</div>
+<Gvb_bread_crumb></Gvb_bread_crumb>
 <div class="gvb_function_area">
     <IconMenu class="action_icon"></IconMenu>
 <div class="gvb_theme">
@@ -68,19 +30,8 @@
 </div>
 </div>
 </div>
-<div class="gvb_tabs">
-    <span
-       v-for="(item, index) in tabList" :key="item.name"
-       :class="{gvb_tab: true, active: route.name === item.name}"
-       @click="clickTab(item)"
-       @click.middle="closeTab(item)"
-   >
-     {{ item.title }}
-      <IconClose @click.stop="closeTab(item)" v-if="item.name !== 'home'"></IconClose>
-   </span>
-   <span @click="closeAllTab" class="gvb_tab close_all_tab">全部关闭</span>
-  </div>
 
+<Gvb_tabs></Gvb_tabs>
 <div class="gvb_container">
  <router-view v-slot="{Component}">
 <transition name="fade" mode="out-in">
@@ -108,65 +59,23 @@ IconDown,
 IconUser,
 } from '@arco-design/web-vue/es/icon';
 import {ref, watch} from "vue";
-import type {Component} from "vue";
+import Gvb_menu from '@/components/admin/gvb_menu.vue';
+import Gvb_bread_crumb from '@/components/admin/gvb_bread_crumb.vue';
+import Gvb_tabs from '@/components/admin/gvb_tabs.vue';
 import {useRoute, useRouter, type RouteMeta} from "vue-router";
 
 
 const route = useRoute()
 const router = useRouter()
-interface MenuType {
-  key: string
-  title: string
-  icon?: Component
-  name?: string // 路由名字
-  child?: MenuType[]
-}
-interface MetaType extends RouteMeta{
-  title: string
-}
 
 
-const menuList: MenuType[] = [
-  {key: "1", title: "首页", icon: IconMenu, name: "home", child: []},
-  {
-    key: "2", title: "个人中心", icon: IconUser, name: "user_center", child: [
-      {key: "2-1", title: "我的信息", icon: IconUser, name: "user_info"},
-    ]
-  },
-  {
-    key: "3", title: "文章管理", icon: IconUser, name: "article", child: [
-      {key: "3-1", title: "文章列表", icon: IconUser, name: "article_list"},
-    ]
-  },
-  {
-    key: "4", title: "用户管理", icon: IconUser, name: "users", child: [
-      {key: "4-1", title: "用户列表", icon: IconUser, name: "user_list"},
-    ]
-  },
-  {
-    key: "5", title: "群聊管理", icon: IconUser, name: "chat_group", child: [
-      {key: "5-1", title: "聊天记录", icon: IconUser, name: "chat_list"},
-    ]
-  },
-  {
-    key: "6", title: "系统管理", icon: IconUser, name: "system", child: [
-      {key: "6-1", title: "菜单列表", icon: IconUser, name: "menu_list"},
-    ]
-  },
 
-]
 
 const selectedKeys = ref([route.name])
 const openKeys = ref([route.matched[1].name])
 
-console.log(route.matched)
+// console.log(route.matched)
 
-
-function clickMenu(name: string) {
-  router.push({
-    name: name,
-  })
-}
 
 watch(()=>route.name, ()=>{
   selectedKeys.value = [route.name]
@@ -182,27 +91,7 @@ display: flex;
  aside {
 width: 240px;
 
-    .gvb_logo {
-        height: 90px;
-        display: flex;
-        padding: 20px;
-        align-items: center;
-    img {
-        width: 60px;
-        height: 60px;   
-    }
-    .logo_head {
-        margin-left: 20px;
-        > div:nth-child(1) {
-            font-size: 22px;
 
-        }
-        > div:nth-child(2) {
-            font-size: 12px;
-            margin-left: 17px;
-        }
-    }
-}
  }
 }
 
