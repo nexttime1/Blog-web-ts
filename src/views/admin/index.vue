@@ -1,7 +1,7 @@
 <template>
     <div class="gvb_admin">
 <aside>
-
+    <Gvb_logo></Gvb_logo>
     <Gvb_menu></Gvb_menu>
 
   </aside>
@@ -61,6 +61,7 @@ IconUser,
 import {ref, watch} from "vue";
 import Gvb_menu from '@/components/admin/gvb_menu.vue';
 import Gvb_bread_crumb from '@/components/admin/gvb_bread_crumb.vue';
+import Gvb_logo from '@/components/admin/gvb_logo.vue';
 import Gvb_tabs from '@/components/admin/gvb_tabs.vue';
 import {useRoute, useRouter, type RouteMeta} from "vue-router";
 
@@ -90,7 +91,6 @@ display: flex;
 
  aside {
 width: 240px;
-
 
  }
 }

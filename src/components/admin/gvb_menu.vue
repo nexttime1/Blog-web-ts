@@ -2,7 +2,7 @@
   <div class="gvb_menu">
     <a-menu
         @menu-item-click="clickMenu"
-        v-model:selected-keys="selectedKeys"   
+        v-model:selected-keys="selectedKeys"    
         v-model:open-keys="openKeys"         
     >
       <template v-for="item in menuList" :key="item.key">
@@ -78,8 +78,8 @@ const menuList: MenuType[] = [
   },
 
 ]
-const selectedKeys = ref([route.name])
-const openKeys = ref([route.matched[1].name])
+const selectedKeys = ref([route.name])   //控制 哪个菜单项被选中（高亮显示）
+const openKeys = ref([route.matched[1].name])    // 控制 哪个菜单项被选中（高亮显示）
 function clickMenu(name: string) {
   router.push({
     name: name,
