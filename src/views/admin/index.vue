@@ -9,10 +9,8 @@
     <div class="gvb_head">
 <Gvb_bread_crumb></Gvb_bread_crumb>
 <div class="gvb_function_area">
-    <IconMenu class="action_icon"></IconMenu>
-<div class="gvb_theme">
-<IconSun class="action_icon"></IconSun>
-</div>
+    <IconHome @click="goHome()" class="action_icon"></IconHome>
+<Gvb_theme></Gvb_theme>
 <div class="gvb_user_info_menu">
 <a-dropdown >
     <div class="gvb_user_info_menu_down">
@@ -50,7 +48,7 @@
 
 <script setup lang="ts">
 import {
-IconMenu,
+IconHome,
 IconSun,
 IconApps,
 IconBug,
@@ -64,11 +62,15 @@ import Gvb_bread_crumb from '@/components/admin/gvb_bread_crumb.vue';
 import Gvb_logo from '@/components/admin/gvb_logo.vue';
 import Gvb_tabs from '@/components/admin/gvb_tabs.vue';
 import {useRoute, useRouter, type RouteMeta} from "vue-router";
+import Gvb_theme from '@/components/common/gvb_theme.vue';
 
 
 const route = useRoute()
 const router = useRouter()
 
+function goHome() {
+  router.push({name: "index"})
+}
 
 
 
@@ -91,7 +93,9 @@ display: flex;
 
  aside {
 width: 240px;
-
+height: 100vh;
+border-right:1px solid var(--bg);
+background-color: var(--color-bg-1);
  }
 }
 
@@ -107,6 +111,7 @@ main {
         align-items: center;
         overflow-x: hidden;
         overflow-y: auto;
+        background-color: var(--color-bg-1);
 
 }
     .gvb_function_area{
@@ -116,6 +121,12 @@ main {
                 margin-top: 5px;
                 font-size: 16px;
                 align-items: center;
+                transition: color .3s;
+
+                &:hover{
+                    color: var(--active);
+                    cursor: pointer;
+                }
             }
         .gvb_user_info_menu{
             img {
@@ -124,7 +135,7 @@ main {
                 border-radius: 50%;
                 align-items: center;
             }
-            .gvb_user_info_menu_down {
+            .gvb_user_info_menu_down {  //文字 nexttime
                 display: flex;
                 align-items: center;
                 cursor: pointer;

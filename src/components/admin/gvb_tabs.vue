@@ -1,14 +1,19 @@
 <template>
  <div class="gvb_tabs">
-    <span
-       v-for="(item, index) in tabList" :key="item.name"
+    <swiper
+    :slides-per-view="slidesPerView"
+    class="mySwiper"
+>
+  <swiper-slide v-for="(item, index) in tabList" :key="item.name">
+   <span
        :class="{gvb_tab: true, active: route.name === item.name}"
        @click="clickTab(item)"
-       @click.middle="closeTab(item)"
-   >
-     {{ item.title }}
-      <IconClose @click.stop="closeTab(item)" v-if="item.name !== 'home'"></IconClose>
+       @click.middle="closeTab(item)">
+  {{ item.title }}
+  <IconClose @click.stop="closeTab(item)" v-if="item.name !== 'home'"></IconClose>
    </span>
+  </swiper-slide>
+</swiper>
    <span @click="closeAllTab" class="gvb_tab close_all_tab">全部关闭</span>
   </div>
 </template>
@@ -17,8 +22,16 @@
 
 import {IconClose} from "@arco-design/web-vue/es/icon";
 import type {Ref} from "vue";
+import {reactive} from "vue";
 import {ref, watch, onMounted} from "vue";
 import {useRoute, useRouter} from "vue-router";
+import 'swiper/css';
+
+
+import {Swiper, SwiperSlide} from 'swiper/vue';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
 
 
 const route = useRoute()
@@ -108,12 +121,23 @@ function inList(name: string): boolean {
   }
   return false
 }
+const slidesPerView = ref(6)
+
+onMounted(() => {
+  let mySwiper = document.querySelector(".mySwiper")
+  if (!mySwiper) {
+    return
+  }
+  console.log(mySwiper.clientWidth)
+  slidesPerView.value = Math.round(mySwiper.clientWidth / 90) - 1
+})
+
 
 
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
 .gvb_tabs {
     height: 30px;
@@ -123,9 +147,32 @@ function inList(name: string): boolean {
     display: flex;
     align-items: center;
     position: relative;
+    background-color: var(--color-bg-1);
+
+    .mySwiper {
+  width: calc(100%);
+  overflow: hidden;
+  margin-top: 10px;
+  white-space: nowrap;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+
+  .swiper-wrapper {
+    display: flex;
+    justify-content: start;
+    width: 100%;
+
+    .swiper-slide {
+      width: auto !important;
+    }
+  }
+}
+
     .gvb_tab {
         border-radius: 5px;
-        border: 1px solid rgb(var(--bg));
+        border: 1px solid rgb(var(#000));
         padding: 2px 8px;
         margin-right: 10px;
         cursor: pointer;
@@ -151,9 +198,12 @@ function inList(name: string): boolean {
 }
 
 .close_all_tab{
+    z-index: 10;
     position: absolute;
     right: 20px;
     margin-right: 0;
+    background-color: var(--color-bg-1);
+    border-radius: 0px;
 }
 }
 </style>

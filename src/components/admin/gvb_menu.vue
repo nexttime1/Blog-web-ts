@@ -38,6 +38,7 @@ IconUser,
 import {ref} from "vue";
 import type {Component} from "vue";
 import {useRoute, useRouter, type RouteMeta} from "vue-router";
+import {watch} from "vue";
 const route = useRoute()
 const router = useRouter()
 interface MenuType {
@@ -85,6 +86,12 @@ function clickMenu(name: string) {
     name: name,
   })
 }
+
+watch(() => route.name, ()=>{
+  selectedKeys.value = [route.name]
+  openKeys.value = [route.matched[1].name]
+})
+
 
 </script>
 
