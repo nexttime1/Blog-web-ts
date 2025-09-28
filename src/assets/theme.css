@@ -1,8 +1,10 @@
 body {
   --bg: #f0eeee;
   --active: rgba(var(--arcoblue-6));
+  --login_bg: rgba(255, 255, 255, 0.7);
 }
 
 body[arco-theme='dark'] {
-  --bg: #464646; /* 暗色模式下的背景色 */
+  --bg: #282828; /* 暗色模式下的背景色 */
+    --login_bg: rgba(0, 0, 0, 0.7);
 }
