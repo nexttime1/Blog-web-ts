@@ -1,5 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router'
-
+import {useStore} from "@/stores/counter";
+import type {RouteMeta} from "vue-router";
+import { Message } from '@arco-design/web-vue';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -26,6 +28,7 @@ const router = createRouter({
       name: "admin",
       meta: {
         title: "首页",
+        isLogin: true,
       },
       component: () => import("../views/admin/index.vue"),
       children: [
@@ -60,6 +63,8 @@ const router = createRouter({
           name: "article",
           meta: {
             title: "文章管理",
+            isAdmin: true,
+            isTourist: true,
           },
           children: [
             {
@@ -78,6 +83,8 @@ const router = createRouter({
           name: "users",
           meta: {
             title: "用户管理",
+            isAdmin: true,
+            isTourist: true,
           },
           children: [
             {
@@ -95,6 +102,8 @@ const router = createRouter({
           name: "chat_group",
           meta: {
             title: "群聊管理",
+            isAdmin: true,
+            isTourist: true,
           },
           children: [
             {
@@ -113,6 +122,8 @@ const router = createRouter({
           name: "system",
           meta: {
             title: "系统管理",
+            isAdmin: true,
+            isTourist: false,
           },
           children: [
             {
@@ -139,3 +150,29 @@ const router = createRouter({
 });
 
 export default router
+
+
+router.beforeEach((to, from, next) => {
+const store = useStore();
+const meta: RouteMeta = to.meta;
+
+  if (meta.isLogin && !store.isLogin) {
+  Message.warning("请先登录");  
+  router.push({name: from.name as string});
+  return
+  }
+
+if (store.userInfo.role === 2 && (meta.isAdmin || meta.isTourist )){
+Message.warning( "权限不足")
+router.push({name: from.name as string})
+return
+
+}
+if (store.isTourist && meta.isTourist === false){
+Message.warning( "权限不足")
+router.push({name: from.name as string})
+return
+
+}
+
+});

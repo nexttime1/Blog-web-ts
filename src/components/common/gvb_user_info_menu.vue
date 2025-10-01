@@ -66,6 +66,8 @@ const DropList: dropTabType[] = [
 
 function select(value: string) {
   if (value === "logout") {
+    store.logout();
+    router.push({ path: "index" });
     return;
   }
   router.push({ name: value });
