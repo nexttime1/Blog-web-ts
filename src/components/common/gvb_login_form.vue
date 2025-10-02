@@ -35,7 +35,7 @@
     <div class="other-login">
       <div class="label">第三方登录</div>
       <div class="icons">
-        <a href="">
+        <a href="javascript:void (0)" @click="qqLogin">
           <img src="/image/icon/qq.png" alt="" />
         </a>
       </div>
@@ -52,6 +52,17 @@ import type { loginEmailType } from "@/api/user_api";
 import { Message } from "@arco-design/web-vue";
 import { useStore } from "@/stores/counter";
 import { ref } from "vue";
+import { loginQQPathApi } from "@/api/user_api";
+import { useRoute } from "vue-router";
+
+
+const props = defineProps({
+  qqRedirectPath: {
+    type: String,
+
+  },
+});
+const route = useRoute();
 
 const store = useStore();
 const form = reactive<loginEmailType>({
@@ -81,6 +92,31 @@ async function loginEmail() {
 function formReset() {
   formRef.value.resetFields(Object.keys(form));
   formRef.value.clearValidate(Object.keys(form));
+}
+
+
+
+async function qqLogin() {
+  let res = await loginQQPathApi()
+  if (res.code) {
+    Message.error(res.msg)
+    return
+  }
+  if (res.data === "") {
+    Message.warning("未配置qq登录")
+    return
+  }
+
+  // 存一下我当前点登录的路径
+  // 判断是不是login页面来的
+  let path = route.path
+  if (props.qqRedirectPath){
+    path = props.qqRedirectPath
+  }
+  localStorage.setItem("redirectPath", path)
+
+  window.open(res.data, "_self")
+
 }
 
 

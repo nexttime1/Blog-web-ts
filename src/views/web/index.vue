@@ -19,4 +19,3 @@ import Gvb_theme from "@/components/common/gvb_theme.vue";
 
 </style>
 
-I

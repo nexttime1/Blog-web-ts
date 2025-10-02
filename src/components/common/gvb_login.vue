@@ -16,6 +16,22 @@
 <script setup lang="ts">
 import Gvb_login_form from "@/components/common/gvb_login_form.vue";
 import { ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useStore } from "@/stores/counter";
+import { Message } from "@arco-design/web-vue";
+import { qqLoginApi } from "@/api/user_api";
+
+
+
+const store = useStore();
+const route = useRoute();
+const router = useRouter();
+
+interface routerQuery {
+  code?: string,
+  flag?: string
+}
+
 
 const props = defineProps({
   visible: {
@@ -31,7 +47,27 @@ function close() {
 }
 
 
+async function init(query: routerQuery) {
+  if (!query.code || !query.flag) {
+    return
+  }
+  let res = await qqLoginApi(query.code)
+  if (res.code) {
+    Message.error(res.msg)
+    return
+  }
+  Message.success(res.msg)
+  store.setToken(res.data)
 
+  // 重定向到点击登录的页面
+  let path = localStorage.getItem("redirectPath")
+  if (path === null) {
+    path = "/"
+  }
+  router.push(path)
+}
+
+init(route.query)
 
 </script>
 

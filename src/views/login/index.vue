@@ -1,16 +1,25 @@
 <template>
   <div class="gvb_login">
     <div class="gvb_login_mask">
-           <gvb_login_form @ok="ok"></gvb_login_form>
+           <gvb_login_form @ok="ok" :qq-redirect-path="back"></gvb_login_form>
   </div>
     </div>
 </template>
 <script setup lang="ts">
 import gvb_login_form from "@/components/common/gvb_login_form.vue";
 import "@/assets/font.css"
-import router from "@/router";
+import router from "@/router"; 
+
+interface routerQuery {
+  code?: string,
+  flag?: string
+}
+interface historyState {
+  back: string 
+}
 
 
+const back = (window.history.state as historyState).back
 function ok() {
   let back = window.history.state.back
 

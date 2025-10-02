@@ -2,8 +2,13 @@ import { defineStore } from "pinia";
 import { Message } from "@arco-design/web-vue";
 import { logoutApi } from "@/api/user_api";
 import { parseToken } from "@/utils/jwt";
+import { userInfoApi } from "@/api/user_api";
+import type { userInfotype } from "@/api/user_api";
 
-export interface userInfoType {
+
+
+export interface userStoreInfoType {
+  user_name: string;
   nick_name: string;
   role: number;
   user_id: number;
@@ -12,7 +17,8 @@ export interface userInfoType {
   exp : number;
 }
 
-const userInfo: userInfoType = {
+const userInfo: userStoreInfoType = {
+  user_name: "",
   nick_name: "nexttime",
   role: 0,
   user_id: 0,
@@ -68,9 +74,22 @@ export const useStore = defineStore("counter", {
     },
 
     // 设置token
-    setToken(token: string) {
+    async setToken(token: string) {
       this.userInfo.token = token;
       let info = parseToken(token);
+      let res = await userInfoApi();
+      let data = res.data;
+
+      this.userInfo = {
+        user_name: data.user_name,
+        nick_name: data.nick_name,
+        role: info.role,
+        user_id: info.user_id,
+        avatar: data.avatar,
+        token: token,
+        exp: info.exp,
+      };
+
       Object.assign(this.userInfo, info);
       localStorage.setItem("userInfo", JSON.stringify(this.userInfo));
     },
