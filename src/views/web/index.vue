@@ -4,7 +4,7 @@
     <gvb_login v-model:visible="visible"></gvb_login>
     <a-button @click="visible = true">登录</a-button>
     <gvb_theme></gvb_theme>
-    <router-link to="/login"></router-link>
+    <router-link to="/login">登录后台</router-link>
   </div>
 </template>
 <script setup lang="ts">
