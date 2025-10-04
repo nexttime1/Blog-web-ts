@@ -25,10 +25,11 @@ function ok() {
 
   //拿不到之前的路径，就跳转到首页
   if (back ===  null) {
-    router.push({path: "index"})
+    router.push({path: "admin"})
   }
   else {
     router.push(back)
+    console.log("走了这个   back")
 }
 
 }

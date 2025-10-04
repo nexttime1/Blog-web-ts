@@ -41,13 +41,16 @@ import Gvb_table from "@/components/admin/gvb_table.vue";
 import {userCreateApi, userListApi} from "@/api/user_api";
 import type {userInfoType} from "@/api/user_api";
 import type {filterOptionType} from "@/components/admin/gvb_table.vue";
-import {roleIdListApi} from "@/api/role_api";
+import {roleIdListApi} from "@/api/role_api.ts";
 import type {RecordType} from "@/components/admin/gvb_table.vue";
 import {reactive, ref} from "vue";
-import User_create from "@/components/admin/user_create.vue";
+
+
+import user_create from "@/components/admin/user_create.vue";
+
 import {userUpdateApi} from "@/api/user_api";
 import type {userUpdateRequest} from "@/api/user_api";
-import {roleOptions} from "@/global/global";
+import {roleOptions} from "@/global/global.ts";
 import {Message} from "@arco-design/web-vue";
 import {showMessageRecord} from "@/components/common/gvb_message_record";
 

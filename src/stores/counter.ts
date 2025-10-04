@@ -3,7 +3,7 @@ import { Message } from "@arco-design/web-vue";
 import { logoutApi } from "@/api/user_api";
 import { parseToken } from "@/utils/jwt";
 import { userInfoApi } from "@/api/user_api";
-import type { userInfotype } from "@/api/user_api";
+
 
 
 
