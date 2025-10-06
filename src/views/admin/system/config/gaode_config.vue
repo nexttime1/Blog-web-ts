@@ -13,7 +13,7 @@
   </gvb_config>
 </template>
 <script setup lang="ts">
-import Gvb_config from "@/components/admin/gvb_config.vue";
+import gvb_config from "../../../../components/admin/gvb_config.vue";
 import type {configColumnType} from "@/types";
 import type {gaodeType} from "@/api/settings_api";
 
