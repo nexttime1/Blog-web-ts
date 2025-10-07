@@ -38,5 +38,5 @@ export function logListApi(
 }
 
 export function logReadApi(id: number): Promise<baseResponse<string>> {
-  return useAxios.get("/api/logs/", { params: { id: id } });
+  return useAxios.get("/api/logs/read", { params: { id: id } });
 }
