@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import type { RouteMeta } from "vue-router";
-import { useStore } from "@/stores";
+import { useStore } from "@/stores/counter";
 import { Message } from "@arco-design/web-vue";
 import NProgress from "nprogress";
 

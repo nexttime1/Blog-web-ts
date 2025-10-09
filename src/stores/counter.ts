@@ -1,85 +1,112 @@
 import { defineStore } from "pinia";
-import { Message } from "@arco-design/web-vue";
-import { logoutApi } from "@/api/user_api";
 import { parseToken } from "@/utils/jwt";
+import { logoutApi } from "@/api/user_api";
+import { Message } from "@arco-design/web-vue";
 import { userInfoApi } from "@/api/user_api";
-
-
-
+import type { userInfoType } from "@/api/user_api";
+import type { Themes } from "md-editor-v3";
+import type { siteInfoType } from "@/api/settings_api";
+import { siteInfoApi } from "@/api/settings_api";
+import type { bigModelSettingsType, roleSingleType } from "@/api/big_model_api";
+import { bigModelSettingsApi, roleHistoryListApi } from "@/api/big_model_api";
 
 export interface userStoreInfoType {
   user_name: string;
   nick_name: string;
-  role: number;
-  user_id: number;
+  role: number; // 角色
+  user_id: number; // 用户id
   avatar: string;
   token: string;
-  exp : number;
+  exp: number; // 过期时间 需要x1000
 }
 
+const theme: boolean = true; // true light   false  dark
+const collapsed: boolean = false;
 const userInfo: userStoreInfoType = {
   user_name: "",
-  nick_name: "nexttime",
+  nick_name: "",
   role: 0,
   user_id: 0,
-  avatar: "/image/girl.jpg",
+  avatar: "",
   token: "",
   exp: 0,
 };
+const siteInfo: siteInfoType = {
+  addr: "湖南长沙",
+  bei_an: "湘ICP备2021010654号-3",
+  bilibili_url: "https://space.bilibili.com/359151217",
+  created_at: "2023-09-15",
+  email: "",
+  gitee_url: "https://gitee.com/fengfengzhidao",
+  github_url: "https://github.com/fengfengzhidao/",
+  job: "go后端开发",
+  name: "枫枫",
+  qq_image: "",
+  slogan: "枫枫知道",
+  slogan_en: "FFENGZHIDAO",
+  title: "",
+  version: "8.0.1",
+  web: "",
+  wechat_image: "",
+};
 
-const theme: boolean = true; // true light false dark
+const bigModelInfo: bigModelSettingsType = {
+  name: "",
+  enable: false,
+  api_key: "",
+  api_secret: "",
+  title: "",
+  prompt: "",
+  slogan: "",
+  help: "",
+  order: 0,
+};
+const userRoleHistoryList: roleSingleType[] = [];
 export const useStore = defineStore("counter", {
-  // 状态部分，对应组合式中的ref
   state() {
     return {
       theme: theme,
-      collapsed: false, // 菜单折叠状态
+      collapsed: collapsed, // 后台侧边栏的搜索状态，默认展开
       userInfo: userInfo,
+      siteInfo: siteInfo,
+      bigModelInfo: bigModelInfo,
+      userRoleHistoryList: userRoleHistoryList,
     };
   },
-
-  // 方法部分，对应组合式中的函数
   actions: {
-    setTheme(localTheme?: boolean): void {
+    setTheme(localTheme?: boolean) {
       if (localTheme !== undefined) {
+        // 我传了
         this.theme = localTheme;
       } else {
         this.theme = !this.theme;
       }
       document.documentElement.style.colorScheme = this.themeString;
       document.body.setAttribute("arco-theme", this.themeString);
-      localStorage.setItem("theme", JSON.stringify(this.themeString));
+
+      localStorage.setItem("theme", JSON.stringify(this.theme));
     },
-    loadTheme(): void {
-      const val = localStorage.getItem("theme");
-      if (val == null) {
+    loadTheme() {
+      let val = localStorage.getItem("theme");
+      if (val === null) {
         return;
       }
-
       try {
-        const themeString = JSON.parse(val);
-        // 直接设置 theme 状态，而不是调用 setTheme
-        this.theme = themeString === "light";
-
-        // 应用主题样式
-        document.documentElement.style.colorScheme = themeString;
-        document.body.setAttribute("arco-theme", themeString);
-      } catch (error) {
-        console.error("Error loading theme:", error);
+        this.theme = JSON.parse(val);
+        this.setTheme(this.theme);
+      } catch (e) {
+        return;
       }
     },
-
-    setCollapsed(collapsed: boolean): void {
+    setCollapsed(collapsed: boolean) {
       this.collapsed = collapsed;
     },
-
-    // 设置token
     async setToken(token: string) {
       this.userInfo.token = token;
-      let info = parseToken(token);
+      // 调用户信息的接口
       let res = await userInfoApi();
+      let info = parseToken(token);
       let data = res.data;
-
       this.userInfo = {
         user_name: data.user_name,
         nick_name: data.nick_name,
@@ -90,10 +117,12 @@ export const useStore = defineStore("counter", {
         exp: info.exp,
       };
 
-      Object.assign(this.userInfo, info);
       localStorage.setItem("userInfo", JSON.stringify(this.userInfo));
     },
-    // 加载token
+    setUserInfo(key: "nick_name" | "avatar", val: string) {
+      this.userInfo[key] = val;
+      localStorage.setItem("userInfo", JSON.stringify(this.userInfo));
+    },
     loadToken() {
       let val = localStorage.getItem("userInfo");
       if (val === null) {
@@ -115,31 +144,55 @@ export const useStore = defineStore("counter", {
         return;
       }
     },
-    // 注销
     async logout() {
       await logoutApi();
       this.clearUserInfo();
     },
-    // 清空用户信息
     clearUserInfo() {
       this.userInfo = userInfo;
       localStorage.removeItem("userInfo");
     },
+    async loadSiteInfo() {
+      const val = sessionStorage.getItem("siteInfo");
+      if (val !== null) {
+        try {
+          this.siteInfo = JSON.parse(val);
+          return;
+        } catch (e) {}
+      }
+      let res = await siteInfoApi();
+      this.siteInfo = res.data;
+
+      sessionStorage.setItem("siteInfo", JSON.stringify(this.siteInfo));
+    },
+    async getBigModelInfo() {
+      let res = await bigModelSettingsApi();
+      Object.assign(this.bigModelInfo, res.data);
+    },
+    async getUserRoleHistoryList() {
+      if (!this.isLogin) return;
+      let res = await roleHistoryListApi();
+      this.userRoleHistoryList = res.data;
+    },
   },
-  // 计算属性部分，对应组合式中的computed
   getters: {
-    themeString(): string {
+    themeString(): Themes {
       return this.theme ? "light" : "dark";
     },
+    // 是否登录
     isLogin(): boolean {
       return this.userInfo.role !== 0;
     },
+    // 判断是不是管理员
     isAdmin(): boolean {
-      return this.userInfo.role === 1;
+      return this.userInfo.role == 1;
     },
+    isGeneral(): boolean {
+      return this.userInfo.role == 2;
+    },
+    // 判断是不是游客
     isTourist(): boolean {
-      return this.userInfo.role === 3;
-    }
-    
+      return this.userInfo.role == 3;
+    },
   },
 });
