@@ -165,6 +165,7 @@ export const useStore = defineStore("counter", {
 
       sessionStorage.setItem("siteInfo", JSON.stringify(this.siteInfo));
     },
+    
     async getBigModelInfo() {
       let res = await bigModelSettingsApi();
       Object.assign(this.bigModelInfo, res.data);
