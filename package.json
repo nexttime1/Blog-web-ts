@@ -17,6 +17,7 @@
     "@types/mockjs": "^1.0.10",
     "axios": "^1.12.2",
     "dayjs": "^1.11.18",
+    "echarts": "^6.0.0",
     "font-awesome": "^4.7.0",
     "md-editor-v3": "^6.0.1",
     "mockjs": "^1.1.0",

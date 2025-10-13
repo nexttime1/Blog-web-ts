@@ -29,12 +29,6 @@
 <script setup lang="ts">
 import {
   IconHome,
-  IconSun,
-  IconApps,
-  IconBug,
-  IconBulb,
-  IconDown,
-  IconUser,
 } from "@arco-design/web-vue/es/icon";
 import { ref, watch } from "vue";
 import Gvb_menu from "@/components/admin/gvb_menu.vue";
