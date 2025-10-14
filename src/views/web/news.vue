@@ -42,8 +42,8 @@ import Gvb_banner from "@/components/web/gvb_banner.vue";
 import Gvb_footer from "@/components/web/gvb_footer.vue";
 import {reactive, ref} from "vue";
 import {computed} from "vue";
-import type {newsType} from "@/api/news_api";
-import {newsListApi} from "@/api/news_api";
+import type {newsType} from "@/api/news_api.ts";
+import {newsListApi} from "@/api/news_api.ts";
 
 interface newsAsideType {
   id: string

@@ -91,7 +91,7 @@ import {IconEye} from "@arco-design/web-vue/es/icon";
 import {IconClockCircle} from "@arco-design/web-vue/es/icon";
 import {dateFormat} from "@/utils/date";
 import Gvb_footer from "@/components/web/gvb_footer.vue";
-import {useStore} from "@/stores";
+import { useStore } from "@/stores/counter";
 
 
 const store = useStore()
