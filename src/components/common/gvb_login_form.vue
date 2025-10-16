@@ -62,7 +62,7 @@ const props = defineProps({
 
   },
 });
-const route = useRoute();
+
 
 const store = useStore();
 const form = reactive<loginEmailType>({
@@ -107,6 +107,7 @@ async function qqLogin() {
     return
   }
 
+  const route = useRoute();
   // 存一下我当前点登录的路径
   // 判断是不是login页面来的
   let path = route.path

@@ -82,6 +82,7 @@
 </template>
 <script setup lang="ts">
 import Gvb_nav from "@/components/web/gvb_nav.vue";
+import { showLogin } from "@/components/common/gvb_login.ts";
 import Gvb_banner from "@/components/web/gvb_banner.vue";
 import {useRoute} from "vue-router";
 import Gvb_footer from "@/components/web/gvb_footer.vue";
@@ -100,7 +101,6 @@ import {IconThumbUpFill, IconStarFill, IconDoubleUp, IconMessage} from "@arco-de
 import {articleDiggApi, articleCollectsPostApi} from "@/api/article_api";
 import {Message} from "@arco-design/web-vue";
 import {onUnmounted, onMounted} from "vue";
-import {showLogin} from "@/components/common/gvb_login";
 import {IconTags} from "@arco-design/web-vue/es/icon";
 import router from "@/router";
 
