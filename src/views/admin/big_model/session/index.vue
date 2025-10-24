@@ -14,7 +14,7 @@
         <a-checkbox-group style="width: 100%" v-model="useIDList">
           <div :class="{item: true, isCheck: isInList(item.id)}" v-for="item in data.list">
             <div class="user_item">
-              <a-checkbox v-if="isManage" :value="item.id"></a-checkbox>
+              <a-checkbox v-if="isManage" :value="item.id"></a-checkbox> 
               <div class="avatar">
                 <img :src="item.userAvatar" alt="">
               </div>
