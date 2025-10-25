@@ -4,9 +4,9 @@
       <div class="slogan">{{ data.slogan }}</div>
       <div class="abstract">
         <template v-if="typeof data.abstract === 'object' && data.abstract.length">
-          <VueTyped :strings="data.abstract" loop>
+          <vue-typed-js :strings="data.abstract" :loop="true">
             <span class="typing"></span>
-          </VueTyped>
+          </vue-typed-js>
         </template>
         <template v-else>
           {{ data.abstract }}
@@ -29,7 +29,7 @@
 import type {menuType, bannerType} from "@/api/menu_api";
 import {menuDetailApi} from "@/api/menu_api";
 import {reactive, watch} from "vue";
-import VueTyped from "vue3typed/libs/typed/index.vue"
+import VueTypedJs from "vue-typed-js";
 
 interface BannerType {
   abstract: string | string[]

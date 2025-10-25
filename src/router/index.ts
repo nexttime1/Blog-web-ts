@@ -423,7 +423,7 @@ const router = createRouter({
     {
       path: "/:pathMatch(.*)*", // 页面不存在的情况下会跳到404页面
       name: "notFound",
-      component: () => import("@/views/web/notfound.vue"),
+      component: () => import("@/views/web/article_notfound.vue"),
     },
   ],
 });

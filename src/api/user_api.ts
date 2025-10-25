@@ -2,7 +2,7 @@ import type { baseResponse, paramsType, listDataType } from "@/api/index";
 import { useAxios } from "@/api/index";
 
 export interface loginEmailType {
-  user_name: string;
+  username: string;
   password: string;
 }
 

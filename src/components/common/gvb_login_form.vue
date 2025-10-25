@@ -8,12 +8,12 @@
   >
     <div class="title">用户登录</div>
     <a-form-item
-      field="user_name"
+      field="username"
       label="用户名"
       :rules="[{ required: true, message: '请输入用户名' }]"
       :validate-trigger="['blur']"
     >
-      <a-input v-model="form.user_name" placeholder="用户名">
+      <a-input v-model="form.username" placeholder="用户名">
         <template #prefix>
           <icon-user />
         </template>
@@ -66,7 +66,7 @@ const props = defineProps({
 
 const store = useStore();
 const form = reactive<loginEmailType>({
-  user_name: "",
+  username: "",
   password: "",
 });
 

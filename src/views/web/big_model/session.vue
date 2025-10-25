@@ -226,11 +226,14 @@ function chatSend() {
   })
   chatData.list.push(chatItem)
   chatParams.sessionID = Number(route.query.sessionID)
+  // 新建EventSource 实例  建立SSE链接
   const eventSource = new EventSource(`/api/big_model/chat_sse?token=${chatParams.token}&sessionID=${chatParams.sessionID}&content=${chatParams.content}`)
+  // 链接成功后 执行 这个函数 清空 内容  然后显示 正在输出
   eventSource.onopen = function () {
     chatParams.content = ""
     chatItem.status = true
   }
+  // 后端每返回一次 这个就执行一次
   eventSource.onmessage = function (ev: MessageEvent) {
     const data: baseResponse<string| number> = JSON.parse(ev.data)
     if (data.code) {
@@ -325,7 +328,8 @@ async function chatRemove() {
                 </div>
               </div>
             </div>
-          </div>
+          </div
+          >
         </a-checkbox-group>
 
       </div>

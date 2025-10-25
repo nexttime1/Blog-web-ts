@@ -12,5 +12,17 @@
     "verbatimModuleSyntax": true,
     "lib": ["esnext", "dom"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "lib/*", "shims-vue.d.ts"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "lib/*",
+    "shims-vue.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/lib/vue-cropper/**/*", // 排除 vue-cropper 目录下的所有文件
+    "**/*.min.js" // 也可以直接排除所有 min.js 压缩文件
+  ]
 }

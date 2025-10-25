@@ -18,3 +18,5 @@ declare module "vue-router" {
     title?: string;
   }
 }
+
+declare module "vue-typed-js";
