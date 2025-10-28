@@ -1,5 +1,5 @@
 <template>
-  <div id="article_calendar" style="height: 150px"></div>
+  <div id="article_calendar" style="height: 200px"></div>
 </template>
 <script setup lang="ts">
 import * as echarts from 'echarts';
@@ -69,7 +69,7 @@ onMounted(() => {
       }
     },
     calendar: {
-      top: 20,
+      top: 30,
       right: "center",
       bottom: 30,
       range: props.dateList,  // 时间范围
@@ -79,13 +79,13 @@ onMounted(() => {
       yearLabel: {show: !1},
       monthLabel: {
         nameMap: "cn",
-        fontSize: 11,
+        fontSize: 10,
         color: color
       },
       dayLabel: {
         firstDay: 1,
         nameMap: "cn",
-        fontSize: 11,
+        fontSize: 10,
         color: color,
       },
     },

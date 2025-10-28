@@ -1,13 +1,13 @@
 <template>
   <div class="gvb_comment_list_components">
     <a-comment
-        :author="item.user.nick_name"
+        :author="item.user.nickname"
         :content="item.content"
         :datetime="relativeCurrentTime(item.created_at)"
         v-for="item in props.data"
     >
       <template #actions>
-        <span class="action" @click="commentDigg(item)"><IconHeart/> 点赞（{{ item.digg_count }}） </span>
+        <span class="action" @click="commentDigg(item)"><IconHeart/> 点赞（{{ item.digg_count }} </span>
         <span class="action" @click="applyShow(item)"><IconMessage/> 回复 </span>
         <a-popconfirm v-if="store.isAdmin || store.userInfo.user_id === item.user_id" content="是否删除这条评论?"
                       @ok="deleteComment(item)">
@@ -24,7 +24,7 @@
         <template #content>
           <div class="apply_comment">
             <a-input :class="'comment_apply_ipt__'+item.id" @keydown.enter.ctrl="applyComment(item)"
-                     :placeholder="'回复'+item.user.nick_name"
+                     :placeholder="'回复'+item.user.nickname"
                      v-model="item.applyContent"></a-input>
             <a-button type="primary" style="margin-left: 10px" @click="applyComment(item)">回复</a-button>
           </div>
@@ -116,7 +116,13 @@ async function commentDigg(record: commentType) {
     return
   }
   Message.success(res.msg)
-  record.digg_count++
+  if (res.data.is_digg) {
+    // 本次是点赞，数量+1
+    record.digg_count++
+  } else {
+    // 本次是取消点赞，数量-1
+    record.digg_count--
+  }
 }
 
 function avatarClick(item: commentType) {
@@ -130,7 +136,7 @@ function avatarClick(item: commentType) {
     Message.warning("不能和自己聊天")
     return
   }
-  showMessageRecord(item.user_id, item.user.nick_name)
+  showMessageRecord(item.user_id, item.user.nickname)
 }
 
 

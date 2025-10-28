@@ -17,7 +17,7 @@ export interface commentUserType {
   addr: string;
   avatar: string;
   ip: string;
-  nick_name: string;
+  nickname: string;
 }
 
 export interface commentType {
@@ -38,9 +38,8 @@ export interface commentType {
 
 export function commentListApi(
   id: string,
-  params: paramsType
 ): Promise<baseResponse<listDataType<commentType>>> {
-  return useAxios.get("/api/comments/" + id, { params });
+  return useAxios.get("/api/comments/" + id);
 }
 
 export function commentDeleteApi(id: number): Promise<baseResponse<string>> {
@@ -59,6 +58,11 @@ export function commentCreateApi(
   return useAxios.post("/api/comments", data);
 }
 
-export function commentDiggApi(id: number): Promise<baseResponse<string>> {
+
+export interface CommentDiggData {
+  is_digg: boolean; // 后端返回的"是否点赞"状态
+}
+
+export function commentDiggApi(id: number): Promise<baseResponse<CommentDiggData>> {
   return useAxios.get("/api/comments/digg/" + id.toString());
 }

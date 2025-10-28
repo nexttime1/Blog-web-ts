@@ -122,7 +122,7 @@ const config = reactive<chatGroupConfigType>({
   isAnonymous: true,
   isShowTime: false,
   defaultLimit: 50,
-  welcomeTitle: "【枫枫知道】在线聊天室",
+  welcomeTitle: "【下次一定】在线聊天室",
   isOnlinePeople: true,
   isSendImage: false,
   isSendFile: false,

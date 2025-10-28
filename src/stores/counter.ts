@@ -22,6 +22,8 @@ export interface userStoreInfoType {
 
 const theme: boolean = true; // true light   false  dark
 const collapsed: boolean = false;
+const baseUrl = "http://127.0.0.1:8080/"; 
+
 const userInfo: userStoreInfoType = {
   user_name: "",
   nick_name: "",
@@ -32,22 +34,22 @@ const userInfo: userStoreInfoType = {
   exp: 0,
 };
 const siteInfo: siteInfoType = {
-  addr: "湖南长沙",
-  bei_an: "湘ICP备2021010654号-3",
-  bilibili_url: "https://space.bilibili.com/359151217",
-  created_at: "2023-09-15",
+  addr: "中国北京",
+  bei_an: "北京工业大学平乐园100号",
+  bilibili_url: "https://space.bilibili.com/1382556399?spm_id_from=333.788.0.0",
+  created_at: "2025-05-15",
   email: "",
-  gitee_url: "https://gitee.com/fengfengzhidao",
-  github_url: "https://github.com/fengfengzhidao/",
+  gitee_url: "https://gitee.com/",
+  github_url: "https://github.com/nexttime1",
   job: "go后端开发",
-  name: "枫枫",
-  qq_image: "",
-  slogan: "枫枫知道",
-  slogan_en: "FFENGZHIDAO",
+  name: "小透明",
+  qq_image: "image/icon/qq_2083933996.png",
+  slogan: "下次一定",
+  slogan_en: "NEXTTIMEXTM",
   title: "",
   version: "8.0.1",
   web: "",
-  wechat_image: "",
+  wechat_image: "image/icon/wechat_2083933996.png",
 };
 
 const bigModelInfo: bigModelSettingsType = {
@@ -105,14 +107,16 @@ export const useStore = defineStore("counter", {
       this.userInfo.token = token;
       // 调用户信息的接口
       let res = await userInfoApi();
+    
       let info = parseToken(token);
       let data = res.data;
+      console.log("user info data:", data);
       this.userInfo = {
         user_name: data.user_name,
         nick_name: data.nick_name,
         role: info.role,
         user_id: info.user_id,
-        avatar: data.avatar,
+        avatar: baseUrl + data.avatar,
         token: token,
         exp: info.exp,
       };

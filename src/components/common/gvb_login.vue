@@ -60,11 +60,11 @@ async function init(query: routerQuery) {
   store.setToken(res.data)
 
   // 重定向到点击登录的页面
-  let path = localStorage.getItem("redirectPath")
-  if (path === null) {
-    path = "/"
-  }
+  // 等待 store 更新后再跳转
+setTimeout(() => {
+  let path = localStorage.getItem("redirectPath") || "/"
   router.push(path)
+}, 50)
 }
 
 init(route.query)

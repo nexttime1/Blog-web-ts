@@ -148,6 +148,8 @@ async function getData() {
     return
   }
   Object.assign(data, res.data)
+  let banner_url = res.data.banner_url
+  data.banner_url = "http://127.0.0.1:8080/" + banner_url
   isCatalogShow.value = true
 }
 

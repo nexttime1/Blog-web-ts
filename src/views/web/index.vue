@@ -1,7 +1,7 @@
 <template>
   <div class="index_view">
-    <gvb_nav></gvb_nav>
-    <gvb_banner></gvb_banner>
+    <Gvb_nav></Gvb_nav>
+    <Gvb_banner></Gvb_banner>
     <main>
       <div class="container">
         <div class="left">

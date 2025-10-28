@@ -140,6 +140,7 @@ onMounted(() => {
   align-items: center;
   position: relative;
   background-color: var(--color-bg-1);
+  margin-top: 5px;
 
   .mySwiper {
     width: calc(100%);
@@ -165,8 +166,9 @@ onMounted(() => {
   .gvb_tab {
     border-radius: 5px;
     border: 1px solid rgb(var(#000));
-    padding: 2px 8px;
+    padding: 5px 10px;
     margin-right: 10px;
+    align-items: center;
     cursor: pointer;
 
     &.active {

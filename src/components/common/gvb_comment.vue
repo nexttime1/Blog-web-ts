@@ -30,10 +30,10 @@ const data = reactive<listDataType<commentType>>({
   count: 0
 })
 
-const params = reactive<paramsType>({})
 
 async function getData() {
-  let res = await commentListApi(props.articleId, params)
+  let res = await commentListApi(props.articleId)
+  
   data.list = res.data.list
   data.count = res.data.count
 }
@@ -98,6 +98,7 @@ defineExpose({
     position: relative;
 
     button {
+      z-index: 10; /* 键层级高于文本框（默认z-index为0），确保不被遮挡 */
       position: absolute;
       right: 10px;
       bottom: 15px;

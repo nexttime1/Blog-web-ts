@@ -3,7 +3,7 @@
     <div class="title">
       <i class="fa fa-quote-left"></i>
       <i class="fa fa-quote-right"></i>
-      全新8代，回归简约
+      个人博客，回归简约
     </div>
     <div class="info">
       <div class="item">

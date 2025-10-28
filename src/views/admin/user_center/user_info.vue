@@ -18,7 +18,7 @@
           <span>{{ form.user_name }}</span>
         </a-form-item>
         <a-form-item label="头像">
-          <a-avatar @click="showCropper" :image-url="form.avatar"></a-avatar>
+          <a-avatar @click="showCropper" :image-url="form.avatar"></a-avatar> 
         </a-form-item>
         <a-form-item field="nick_name" label="昵称" :rules="[{required:true,message:'请输入昵称'}]"
                      :validate-trigger="['blur']">
@@ -35,7 +35,7 @@
           <span>{{ form.email }}</span>
         </a-form-item>
         <a-form-item label="当前角色">
-          <span>{{ form.role }}</span>
+          <span>{{ RoleName }}</span>
         </a-form-item>
         <a-form-item label="注册来源">
           <span>{{ form.sign_status }}</span>
@@ -79,13 +79,14 @@ import type {userInfoType} from "@/api/user_api";
 import {userInfoApi, userInfoUpdateApi} from "@/api/user_api";
 import Gvb_title from "@/components/common/gvb_title.vue";
 import type {userInfoUpdateType} from "@/api/user_api";
-import {Message} from "@arco-design/web-vue";
+import {Avatar, Message} from "@arco-design/web-vue";
 import Gvb_update_password from "@/components/common/gvb_update_password.vue";
 import Gvb_bind_email from "@/components/common/gvb_bind_email.vue";
 import Gvb_cropper from "@/components/common/gvb_cropper.vue";
 import Gvb_user_info_preview from "@/components/common/gvb_user_info_preview.vue";
 import {Random} from "mockjs";
 import { useStore } from "@/stores/counter";
+import {computed} from "vue";
 
 const isLaptops1 = isLaptops
 const formRef = ref()
@@ -153,7 +154,16 @@ function onConfirm(val: string) {
 async function getData() {
   let res = await userInfoApi()
   Object.assign(form, res.data)
+  let Avatar = form.avatar
+  form.avatar = "http://127.0.0.1:8080/" + Avatar
+
 }
+
+const RoleName = computed(() => {
+  if (form.role == "1") return "管理员"
+  else if (form.role == "2") return "普通用户"
+  else return "未知角色"
+})
 
 async function userInfoUpdate() {
   let val = await formRef.value.validate()

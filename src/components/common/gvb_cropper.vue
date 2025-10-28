@@ -83,7 +83,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import 'cropperjs/dist/cropper.css'
+import 'cropperjs/dist/cropper.min.css'
 import VueCropper from 'vue-cropperjs/dist/VueCropper.js'
 import {ref, watch, reactive} from 'vue'
 import {Message} from "@arco-design/web-vue";

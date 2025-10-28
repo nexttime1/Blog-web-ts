@@ -14,8 +14,8 @@ import {newsListApi} from "@/api/news_api";
 const data = reactive<newsType>({
   hotValue: "192.3万",
   index: "1",
-  link: "http://www.fengfengzhidao.com",
-  title: "枫枫知道发布八代博客了",
+  link: "https://space.bilibili.com/1382556399?spm_id_from=333.788.0.0",
+  title: "下次一定个人技术博客",
 })
 
 async function getData(){

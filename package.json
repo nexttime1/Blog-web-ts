@@ -16,7 +16,7 @@
   "dependencies": {
     "@types/mockjs": "^1.0.10",
     "axios": "^1.12.2",
-    "cropperjs": "^2.1.0",
+    "cropperjs": "^1.6.1",
     "dayjs": "^1.11.18",
     "echarts": "^6.0.0",
     "font-awesome": "^4.7.0",
@@ -28,13 +28,14 @@
     "vue": "^3.5.18",
     "vue-cropperjs": "^5.0.0",
     "vue-json-pretty": "^2.5.0",
-    "vue-router": "^4.5.1",
-    "vue-typed-js": "^0.1.2"
+    "vue-router": "^4.6.3",
+    "vue3-typed-js": "^0.0.1"
   },
   "devDependencies": {
     "@arco-design/web-vue": "^2.57.0",
     "@tsconfig/node22": "^22.0.2",
     "@types/node": "^22.16.5",
+    "@types/nprogress": "^0.2.3",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/tsconfig": "^0.7.0",
     "npm-run-all2": "^8.0.4",
