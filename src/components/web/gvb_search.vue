@@ -8,7 +8,7 @@
     <template v-if="data.list.length">
       <div class="body">
         <div class="item" @click="goTo(item)" v-for="item in data.list">
-          <div class="title">{{ item.title }}</div>
+          <div class="title" v-html="item.title"></div>
           <div class="content" v-html="item.body"></div>
         </div>
       </div>

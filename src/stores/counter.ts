@@ -22,7 +22,7 @@ export interface userStoreInfoType {
 
 const theme: boolean = true; // true light   false  dark
 const collapsed: boolean = false;
-const baseUrl = "http://127.0.0.1:8080/"; 
+
 
 const userInfo: userStoreInfoType = {
   user_name: "",
@@ -116,7 +116,7 @@ export const useStore = defineStore("counter", {
         nick_name: data.nick_name,
         role: info.role,
         user_id: info.user_id,
-        avatar: baseUrl + data.avatar,
+        avatar: data.avatar,
         token: token,
         exp: info.exp,
       };

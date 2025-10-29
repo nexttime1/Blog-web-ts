@@ -86,8 +86,7 @@ import Gvb_cropper from "@/components/common/gvb_cropper.vue";
 import Gvb_user_info_preview from "@/components/common/gvb_user_info_preview.vue";
 import {Random} from "mockjs";
 import { useStore } from "@/stores/counter";
-import {computed} from "vue";
-
+import {computed, watch} from "vue";
 const isLaptops1 = isLaptops
 const formRef = ref()
 const store = useStore()
@@ -117,7 +116,7 @@ function showCropper() {
   clipperData.value = {
     type: 'browserLogo', // 该参数可根据实际要求修改类型
     allowTypeList: ['png', 'jpg', 'jpeg',], // 允许上传的图片格式
-    limitSize: 1, // 限制的大小
+    limitSize: 2, // 限制的大小
     fixedNumber: [1, 1],  // 截图比例，可根据实际情况进行修改
     previewWidth: 100 // 预览宽度
   }
@@ -125,7 +124,12 @@ function showCropper() {
   clipperRef.value.uploadFile()
 }
 
-
+watch(
+  () => store.userInfo.avatar,
+  (newVal) => {
+    form.avatar = newVal
+  }
+)
 const form = reactive<userInfoType>({
   id: 0,
   created_at: "",
@@ -146,16 +150,26 @@ const form = reactive<userInfoType>({
   scope: 0,
 })
 
-function onConfirm(val: string) {
-  form.avatar = val
+function onConfirm(val: any) {
+  // 后端返回的 res.data 是数组，取第一个元素的 filepath
+  if (Array.isArray(val)) {
+    form.avatar = val[0]?.filepath || ''
+  } else if (val?.filepath) {
+    form.avatar = val.filepath
+  } else {
+    form.avatar = val
+  }
+  console.log("val：", val)
+  console.log("头像地址：", form.avatar)
   userInfoUpdate()
 }
+
 
 async function getData() {
   let res = await userInfoApi()
   Object.assign(form, res.data)
-  let Avatar = form.avatar
-  form.avatar = "http://127.0.0.1:8080/" + Avatar
+  // let Avatar = form.avatar
+  // form.avatar = "http://127.0.0.1:8080/" + Avatar
 
 }
 
