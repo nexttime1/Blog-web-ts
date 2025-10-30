@@ -4,7 +4,7 @@
       <a-upload
           list-type="picture-card"
           action="/api/images"
-          name="images"
+          name="image"
           :headers="{token: store.userInfo.token}"
           v-model:file-list="fileList"
           image-preview

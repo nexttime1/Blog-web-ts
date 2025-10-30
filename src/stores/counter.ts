@@ -111,6 +111,8 @@ export const useStore = defineStore("counter", {
       let info = parseToken(token);
       let data = res.data;
       console.log("user info data:", data);
+      console.log(" info data:", info);
+      
       this.userInfo = {
         user_name: data.user_name,
         nick_name: data.nick_name,

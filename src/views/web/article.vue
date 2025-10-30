@@ -148,8 +148,9 @@ async function getData() {
     return
   }
   Object.assign(data, res.data)
-  let banner_url = res.data.banner_url
+    let banner_url = res.data.banner_url
   data.banner_url = "http://127.0.0.1:8080/" + banner_url
+  console.log(data.user_avatar)
   isCatalogShow.value = true
 }
 
@@ -328,7 +329,7 @@ watch(() => route.params, () => {
 
       .article_container {
         width: calc(100% - 320px);
-
+        margin-left: -40px;
         .head {
           border-radius: 5px 5px 0 0;
           margin-bottom: 1px;
@@ -373,6 +374,7 @@ watch(() => route.params, () => {
 
         .md-editor {
           background-color: var(--color-bg-1);
+          padding-left: 10px !important;
         }
 
         .next_prev {

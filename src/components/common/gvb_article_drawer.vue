@@ -118,8 +118,9 @@ async function createArticle() {
   }
 
   sessionStorage.setItem("saveStore", JSON.stringify(saveStore))
-
-  emits("ok")
+  setTimeout(() => {
+    emits("ok")
+  }, 300)
 }
 
 function getData() {

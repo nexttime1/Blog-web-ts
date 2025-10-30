@@ -85,6 +85,8 @@ const gvbTable = ref()
 const params = reactive<paramsType & { is_user: boolean }>({
   is_user: isUser
 })
+
+//表格顶部的筛选项
 const filterGroup: filterOptionType[] = [
   {
     label: "文章分类",

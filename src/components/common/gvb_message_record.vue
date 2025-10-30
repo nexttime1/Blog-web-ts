@@ -301,6 +301,7 @@ async function removeChatGroup() {
     height: 200px;
 
     button {
+      z-index: 10; /* 键层级高于文本框（默认z-index为0），确保不被遮挡 */
       position: absolute;
       right: 30px;
       bottom: 20px;

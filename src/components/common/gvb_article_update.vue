@@ -38,7 +38,7 @@
           <a-input v-model="form.link" placeholder="原文地址"></a-input>
         </a-form-item>
         <a-form-item label="文章来源">
-          <a-input v-model="form.source" placeholder="文章来源"></a-input>
+          <a-input v-model="form.source" placeholder="文章来源"></a-input> 
         </a-form-item>
         <a-form-item label="预览" v-if="form.title && form.banner_url && form.category" content-class="preview_body">
           <Gvb_article_item :data="form" preview></Gvb_article_item>
@@ -98,7 +98,6 @@ function bannerChange(val: any) {
   const image = imageIdList.value.find((item) => item.id === val)
   form.banner_url = (image as imageIdType).path
 }
-
 
 interface Props {
   visible: boolean
@@ -169,7 +168,10 @@ async function okHandler() {
     }
     Message.success(res.msg)
     emits("update:visible", false)
-    emits("ok")
+    // ✅ 等动画结束再通知父组件刷新
+    setTimeout(() => {
+      emits("ok")
+    }, 300) // modal 动画默认 300ms 左右
   }
   if (type === "add") {
     emits("update:visible", false)
