@@ -3,8 +3,13 @@
     <div class="article">
 
       <div class="head">
-        <a-input-search placeholder="搜索文章标题"></a-input-search>
-      </div>
+        <a-input-search 
+  placeholder="搜索文章标题"
+ v-model="searchKeyword"
+  @search="handleSearch" 
+ @keydown.enter.prevent="handleSearch" 
+  />
+      </div> 
       <div class="article_list">
         <div :class="{item: true, active: articleID === item.id}" @click="checkItem(item)"
              v-for="item in articleList.list">
@@ -36,7 +41,7 @@
 <script setup lang="ts">
 import {reactive} from "vue";
 import type {listDataType, paramsType} from "@/api";
-import type {commentArticleType} from "@/api/comment_api";
+import type {commentArticleType, CommentArticleListType} from "@/api/comment_api";
 import {ref} from "vue";
 import {IconDelete} from "@arco-design/web-vue/es/icon";
 import {commentArticleListApi} from "@/api/comment_api";
@@ -44,7 +49,13 @@ import Gvb_comment from "@/components/common/gvb_comment.vue";
 import router from "@/router";
 import {useRoute} from "vue-router";
 
-
+const searchKeyword = ref<string>(''); // 存储搜索框输入的关键词
+function handleSearch() {
+  // 将搜索关键词存入请求参数（假设后端接收的参数名为title）
+  articleParams.title = searchKeyword.value;
+  // 重新获取文章列表（带上搜索参数）
+  getArticleList();
+}
 const route = useRoute()
 const articleID = ref<string>(route.query.id as string)
 
@@ -53,7 +64,9 @@ const articleList = reactive<listDataType<commentArticleType>>({
   count: 0,
 })
 
-const articleParams = reactive<paramsType>({})
+
+
+const articleParams = reactive<CommentArticleListType>({})
 
 
 async function getArticleList() {

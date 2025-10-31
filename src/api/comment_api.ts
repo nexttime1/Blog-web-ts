@@ -7,11 +7,16 @@ export interface commentArticleType {
   count: number;
 }
 
+export interface CommentArticleListType extends paramsType {
+  title?: string;
+}
+
 export function commentArticleListApi(
-  params: paramsType
+  params: CommentArticleListType
 ): Promise<baseResponse<listDataType<commentArticleType>>> {
   return useAxios.get("/api/comments/articles", { params });
 }
+
 
 export interface commentUserType {
   addr: string;

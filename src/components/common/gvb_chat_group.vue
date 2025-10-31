@@ -16,7 +16,7 @@
           </a-button>
         </div>
       </div>
-      <div class="record_list">
+      <div class="record_list" v-if = "!suppressRender">
         <a-checkbox-group v-model="selectIDList">
           <template v-for="item in chatRecordData.list">
             <div :class="{msg: true, isManage: isManage}">
@@ -66,7 +66,7 @@
         <MdEditor v-else v-model="content" :theme="store.themeString" placeholder="聊天内容"
                   :max-length="config.contentLength" :toolbars="[]"
                   :footers="[]" :on-upload-img="config.isSendImage ? onUploadImage : undefined" :preview="false"/>
-        <a-button type="primary" class="send_button" @click="sendData">发送</a-button>
+        <a-button v-if="isButton" type="primary" class="send_button" @click="sendData">发送</a-button>
       </div>
     </a-spin>
 
@@ -152,16 +152,54 @@ async function getData() {
   chatRecordData.count = res.data.count
 }
 
-async function flush() {
-  await getConfig()
-  await getData()
-  Message.success("刷新成功")
-}
+// 在 script 顶部（data/refs）加上这个（若已存在请复用，不要重复定义）：
+const suppressRender = ref(false) // 刷新时隐藏消息列表以避免闪动
 
+// 用下面这个完整的 flush 替换你现有的 flush
+async function flush() {
+  try {
+    // 先保存当前自己的昵称（避免刷新后丢失）
+    const myName = chatData.nickName
+
+    // 先屏蔽渲染，避免在中间状态渲染历史消息导致闪动
+    suppressRender.value = true
+
+    // 重新拉配置
+    await getConfig()
+
+    // 4) 拉取新的聊天记录
+    await getData()
+
+//  处理并一次性赋值（避免中途触发多次渲染）
+    //    先把数据复制到临时数组，做 isMe 标注后再写回 reactive list
+    const tmpList = (chatRecordData.list || []).map(item => ({
+      ...item,
+      isMe: item.nick_name === myName
+    }))
+
+    // 6) 一次性替换列表（避免中间态闪动）
+    chatRecordData.list = tmpList
+
+    // 7) 恢复渲染
+    suppressRender.value = false
+
+    // 8) 保留昵称（如果没有被覆盖）
+    if (!chatData.nickName && myName) {
+      chatData.nickName = myName
+    }
+
+    Message.success("刷新成功")
+  } catch (err) {
+    // 如果出现异常，也恢复渲染并提示错误
+    suppressRender.value = false
+    console.error(err)
+    Message.error("刷新失败")
+  }
+}
 
 const isManage = ref(false)
 const selectIDList = ref<number[]>([])
-
+const isButton = ref(false)
 async function removeChatGroup() {
   let res = await chatRemoveApi(selectIDList.value)
   if (res.code) {
@@ -212,39 +250,39 @@ function websocketConnect() {
   // 建立websocket连接
   socket.value = new WebSocket(`ws://${location.host}/ws/api/chat_groups`)
   // 接收消息
-  socket.value.onmessage = function (event) {
-    let _data = event.data
-    let jsonData = JSON.parse(_data) as chatMessageType
-    if (index === 0) {
-      // 第一条消息  区分我发的还是别人发的
-      chatData.nickName = jsonData.nick_name
-      chatData.onlineCount = jsonData.online_count as number
-      index++
-      return
-    }
-    chatData.onlineCount = jsonData.online_count as number
-    chatRecordData.list.push({
-      avatar: jsonData.avatar,
-      content: jsonData.content,
-      created_at: jsonData.created_at,
-      msg_type: jsonData.msg_type,
-      nick_name: jsonData.nick_name,
-      isMe: chatData.nickName === jsonData.nick_name,
-    })
-    index++
+socket.value.onmessage = function (event) {
+  const jsonData = JSON.parse(event.data) as chatMessageType
+  chatData.onlineCount = jsonData.online_count as number
 
-    nextTick(() => {
-      let dom = document.querySelector(".record_list") as HTMLDivElement
-      dom.scrollTo({
-        top: dom.scrollHeight,
-        behavior: "smooth" // 平滑
-      })
-    })
+  // 如果还没设置昵称（第一次消息），就记录自己的昵称
+  if (!chatData.nickName) {
+    chatData.nickName = jsonData.nick_name
   }
+
+
+  chatRecordData.list.push({
+    avatar: jsonData.avatar,
+    content: jsonData.content,
+    created_at: jsonData.created_at,
+    msg_type: jsonData.msg_type,
+    nick_name: jsonData.nick_name,
+    isMe: chatData.nickName === jsonData.nick_name,
+  })
+
+  nextTick(() => {
+    const dom = document.querySelector(".record_list") as HTMLDivElement
+    dom.scrollTo({
+      top: dom.scrollHeight,
+      behavior: "smooth"
+    })
+  })
+}
 
   // 连接成功之后的回调
   socket.value.onopen = function (ev) {
+
     Message.success("成功进入聊天室")
+    isButton.value = true
   }
   // 错误
   socket.value.onerror = function (ev) {
@@ -423,6 +461,7 @@ function sendData() {
 
     .msg {
       position: relative;
+      
 
       &.isManage {
         background-color: var(--color-fill-1);
@@ -477,6 +516,7 @@ function sendData() {
         align-items: center;
         cursor: pointer;
       }
+      
     }
 
     .inRoom {
@@ -499,6 +539,10 @@ function sendData() {
     .md-editor {
       height: 100%;
     }
+    button {
+      z-index: 10;
+    }
+
   }
 
 

@@ -151,8 +151,18 @@ export const useStore = defineStore("counter", {
       }
     },
     async logout() {
-      await logoutApi();
-      this.clearUserInfo();
+  try {
+    const res = await logoutApi();
+      if (res.code) {
+        Message.error(res.msg);
+        return;
+      }
+    Message.success(res.msg);
+  } catch (e) {
+    
+  } finally {
+    this.clearUserInfo();
+  }
     },
     clearUserInfo() {
       this.userInfo = userInfo;

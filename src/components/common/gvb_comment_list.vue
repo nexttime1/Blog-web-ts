@@ -7,7 +7,7 @@
         v-for="item in props.data"
     >
       <template #actions>
-        <span class="action" @click="commentDigg(item)"><IconHeart/> 点赞（{{ item.digg_count }} </span>
+        <span class="action" @click="commentDigg(item)"><IconHeart/> 点赞（{{ item.digg_count }}） </span>
         <span class="action" @click="applyShow(item)"><IconMessage/> 回复 </span>
         <a-popconfirm v-if="store.isAdmin || store.userInfo.user_id === item.user_id" content="是否删除这条评论?"
                       @ok="deleteComment(item)">

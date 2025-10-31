@@ -118,11 +118,9 @@ const store = useStore();
 
 function checkMessage(record: userInfoType) {
     // 当前登录用户不能和自己聊天
-  if (record.user_name === store.userInfo.user_name) {
+  if (record.id === store.userInfo.user_id) {
     return Message.warning("不能和自己聊天哦~");
   }
-  console.log("record.user_name", record.user_name);
-    console.log("store.userInfo.user_name", store.userInfo.user_name);
   showMessageRecord(record.id, record.nick_name)
 }
 

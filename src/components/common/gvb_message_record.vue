@@ -86,6 +86,7 @@ async function getRecordData() {
   // 判断谁算右边 => isMe
   // 以user1为准
   const list: messageRecordType[] = []
+  console.log("当前用户ID：", store.userInfo.user_id)
   res.data.list.forEach((item) => {
     if (item.send_user_id === store.userInfo.user_id) {
       item.isMe = true
