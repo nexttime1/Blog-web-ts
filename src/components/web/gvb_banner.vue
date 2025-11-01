@@ -81,7 +81,7 @@ async function getData() {
   }
 
   const res = await menuDetailApi(location.pathname)
-  data.banners = res.data.banners
+  data.banners = res.data.Banners
   data.abstract = res.data.abstract
   data.banner_time = res.data.banner_time
   data.slogan = res.data.slogan

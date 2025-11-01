@@ -210,11 +210,13 @@ function isInList(id: number): boolean {
   return false
 }
 
+
 function chatSend() {
   if (chatParams.content.trim() === "") {
     Message.warning("内容不能为空")
     return
   }
+  
   const chatItem = reactive<bigModelchatListType>({
     id: 0,
     created_at: new Date().toLocaleString(),
@@ -226,32 +228,53 @@ function chatSend() {
   })
   chatData.list.push(chatItem)
   chatParams.sessionID = Number(route.query.sessionID)
-  // 新建EventSource 实例  建立SSE链接
-  const eventSource = new EventSource(`/api/big_model/chat_sse?token=${chatParams.token}&sessionID=${chatParams.sessionID}&content=${chatParams.content}`)
-  // 链接成功后 执行 这个函数 清空 内容  然后显示 正在输出
+  
+  // 对内容进行编码
+  const encodedContent = encodeURIComponent(chatParams.content)
+  
+  // 新建EventSource实例
+  const eventSource = new EventSource(`/api/big_model/chat_sse?token=${chatParams.token}&sessionID=${chatParams.sessionID}&content=${encodedContent}`)
+  
+  // 连接打开
   eventSource.onopen = function () {
+    console.log('SSE连接已建立')
     chatParams.content = ""
     chatItem.status = true
   }
-  // 后端每返回一次 这个就执行一次
+  
+  // 接收消息
   eventSource.onmessage = function (ev: MessageEvent) {
-    const data: baseResponse<string| number> = JSON.parse(ev.data)
-    if (data.code) {
-      // Message.error(data.msg)
-      chatItem.botContent = data.msg
-      return
+    try {
+      const data: baseResponse<string | number> = JSON.parse(ev.data);
+      
+      // 错误处理
+      if (data.code && data.code !== 0) {
+        Message.error(data.msg);
+        eventSource.close();
+        return;
+      }
+      
+      // 增量内容在data.msg里
+      if (typeof data.msg === "string" && data.msg.trim() !== "") {
+        chatItem.botContent += data.msg;
+      }
+      
+      // 结束标识
+      if (data.msg === "成功" && typeof data.data === "number") {
+        chatItem.id = data.data;
+        eventSource.close();
+        // 可选：刷新聊天列表
+        getData();
+      }
+    } catch (error) {
+      console.error('解析SSE数据失败:', error)
     }
-
-    if (data.msg === "ok"){
-      chatItem.id = data.data as number
-      return;
-    }
-    chatItem.botContent += data.data as string
-  }
-
+  };
+  
   eventSource.onerror = function (ev: Event) {
+    console.error('SSE连接错误:', ev)
     eventSource.close()
-    // 控制页面滚动到最底部
+    Message.error('连接发生错误')
   }
 }
 

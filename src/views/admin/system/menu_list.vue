@@ -28,7 +28,7 @@
       <template #banners="{record}:{record: menuType}">
         <div class="menu_column_image">
           <a-image
-              v-for="item in record.banners"
+              v-for="item in record.Banners"
               height="40px"
               :key="item.id" :src="item.path"></a-image>
         </div>
@@ -46,7 +46,7 @@ import Menu_create from "@/components/admin/menu_create.vue";
 import {defaultMenuForm} from "@/api/menu_api";
 
 const gvbTable = ref()
-const recordData = reactive<menuCreateRequest & { banners: bannerType[], id?: number }>({
+const recordData = reactive<menuCreateRequest & { Banners: bannerType[], id?: number }>({
   abstract: [],
   abstract_time: 7,
   banner_time: 7,
@@ -55,7 +55,7 @@ const recordData = reactive<menuCreateRequest & { banners: bannerType[], id?: nu
   slogan: "",
   sort: 1,
   title: "",
-  banners: []
+  Banners: []
 })
 const columns = [
   {title: '序号', dataIndex: 'sort'},
@@ -80,7 +80,7 @@ function edit(record: menuType) {
 function add() {
   Object.assign(recordData, defaultMenuForm)
   recordData.id = undefined
-  recordData.banners = []
+  recordData.Banners = []
   visible.value = true
 }
 

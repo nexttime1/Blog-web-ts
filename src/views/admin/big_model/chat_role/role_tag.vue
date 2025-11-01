@@ -1,6 +1,6 @@
 <template>
   <div class="menu_list_view">
-    <a-modal title="添加标签" v-model:visible="visible" :on-before-ok="ok">
+    <a-modal :title="tagName" v-model:visible="visible" :on-before-ok="ok">
       <a-form ref="formRef" :model="form">
         <a-form-item field="title" label="标签名称" :rules="[{required:true,message:'请输入标签名称'}]"
                      :validate-trigger="['blur']">
@@ -63,6 +63,7 @@ const columns = [
 const visible = ref(false)
 
 function edit(record: bigModelRoleTagType) {
+  tagName.value = "编辑标签"
   form.id = record.id
   form.title = record.title
   form.color = record.color
@@ -70,10 +71,18 @@ function edit(record: bigModelRoleTagType) {
 }
 
 function add() {
+  tagName.value = "创建标签";
+  // 2. 清空表单数据（避免残留编辑时的内容）
+  form.id = 0;
+  form.title = "";
+  form.color = "";
+  // 3. 打开模态框
+  visible.value = true;
   visible.value = true
 }
 
 const formRef = ref()
+const tagName = ref("创建标签")
 
 async function ok() {
   let val = await formRef.value.validate()
@@ -85,6 +94,7 @@ async function ok() {
   }
   Message.success(res.msg)
   visible.value = false
+  tagName.value = "创建标签"
   gvbTable.value.getList()
 }
 

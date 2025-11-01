@@ -75,7 +75,7 @@
         <a-switch :model-value="record.autoReply"></a-switch>
       </template>
       <template #icon="{record}:{record: bigModelRoleType}">
-        <a-image width="40px" height="40px" :src="record.icon"></a-image>
+        <a-image width="40px" height="40px" :src="record.icon"></a-image> 
       </template>
       <template #tags="{record}:{record: bigModelRoleType}">
         <div class="col_tag">
@@ -215,7 +215,10 @@ async function ok() {
   }
   Message.success(res.msg)
   visible.value = false
+    setTimeout(() => {
   gvbTable.value.getList()
+  }, 300)
+
 }
 
 </script>

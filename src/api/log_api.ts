@@ -17,7 +17,7 @@ export type logLevel = "info" | "warning" | "error";
 export interface logType {
   readonly id: number;
   created_at: string;
-  updated_at: string;
+  UpdatedAt: string;
   ip: string;
   addr: string;
   level: logLevel; // 日志的等级
@@ -26,9 +26,9 @@ export interface logType {
   userID: number;
   userName: string;
   serviceName: string;
-  status: boolean;
-  type: string; // 日志类型
-  readStatus: boolean;
+  loginStatus: boolean;
+  logType: string; // 日志类型
+  isRead: boolean;
 }
 
 export function logListApi(

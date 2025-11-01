@@ -123,12 +123,12 @@ export function bigModelRoleListApi(params?: paramsType): Promise<baseResponse<l
 
 // 创建角色
 export function bigModelRoleCreateApi(data: bigModelRoleType): Promise<baseResponse<string>> {
-    return useAxios.post("/api/big_model/roles", data)
+    return useAxios.put("/api/big_model/roles", data)
 }
 
 // 更新角色
 export function bigModelRoleUpdateApi(data: bigModelRoleType): Promise<baseResponse<string>> {
-    return useAxios.post("/api/big_model/roles", data);
+    return useAxios.put("/api/big_model/roles", data);
 }
 
 // 角色标签options列表

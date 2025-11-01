@@ -66,7 +66,7 @@
       </template>
       <template #title="{record}: {record: logType}">
         <div class="log_column_title">
-          <span @click="readLog(record)" :class="{isRead: record.readStatus}">{{ record.title }}</span>
+          <span @click="readLog(record)" :class="{isRead: record.isRead}">{{ record.title }}</span>
         </div>
       </template>
     </gvb_table>
@@ -121,7 +121,7 @@ const columnDict = {
     {
       title: '状态', dataIndex: 'status', render: (data: any) => {
         const record = data.record as logType
-        if (record.status) {
+        if (record.loginStatus) {
           return h(Tag, {color: "blue"}, {default: () => "成功"})
         }
         return h(Tag, {color: "red"}, {default: () => "失败"})
@@ -207,9 +207,9 @@ const visible = ref(false)
 
 
 async function readLog(record: logType) {
-  if (!record.readStatus) {
+  if (!record.isRead) {
     await logReadApi(record.id)
-    record.readStatus = true
+    record.isRead = true
   }
   visible.value = true
   logContent.value = record.content

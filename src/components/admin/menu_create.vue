@@ -68,7 +68,7 @@ import type {baseResponse} from "@/api";
 
 interface Props {
   visible: boolean
-  record: menuCreateRequest & { banners: bannerType[], id?: number }
+  record: menuCreateRequest & { Banners: bannerType[], id?: number }
 }
 
 const props = defineProps<Props>()
@@ -107,7 +107,7 @@ function beforeOpen() {
   form.abstractString = props.record.abstract.join("\n")
   // banner
   const imageIdList: number[] = []
-  for (const banner of props.record.banners) {
+  for (const banner of props.record.Banners) {
     imageIdList.push(banner.id)
   }
   form.imageIdList = imageIdList

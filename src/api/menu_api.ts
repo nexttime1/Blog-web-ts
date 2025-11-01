@@ -10,7 +10,7 @@ export interface menuType {
   abstract: string[];
   abstract_time?: number;
   banner_time: number;
-  banners: bannerType[];
+  Banners: bannerType[];
   created_at: string;
   id: number;
   path: string;
